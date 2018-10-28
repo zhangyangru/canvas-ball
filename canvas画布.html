@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+     <title>Canvas学习</title>
+     <style type="text/css">
+	     canvas{
+	     	border:1px solid gray;
+	     }
+     </style>
+</head>
+
+<body>
+	<canvas width="600" height="400" id="mycanvas"></canvas>
+    <script type="text/javascript">
+    	//使用dom方法来得到画布本身
+    	//必须使用javascript来控制canvas渲染各种东西
+    	var mycanvas = document.getElementById("mycanvas");
+    	//使用画布的上下文
+    	var ctx =mycanvas.getContext("2d");
+    	//画各种东西，用ctx打点调用方法，而不是mycanvas
+    	ctx.fillRect(100,100,300,40);//在（100，100）这个点，画一个矩形，宽度300，高度40
+        ctx.fillStyle="blue";//圆就变成了蓝色的圆
+        //所有的绘制API都是ctx的方法，而不是canvas这个对象
+        ctx.beginPath();
+        ctx.arc(300,300,100,0,Math.PI*2,true);//圆心坐标(300,300),半径：100，从0画到2Π，，true：顺实针
+        ctx.closePath();
+        //ctx.beginPath();
+        //ctx.closePath();这两个什么时候用？？
+        //直接画一个矩形的笔触，没有填充
+        ctx.strokeStyle = "red";
+        //设置笔触颜色
+        ctx.strokeRect(100,100,300,40);//位置：100，100，宽：300，高：40,只描边，不会填充颜色
+
+        //上升到面向对象
+        //构造函数，圆类
+        function Ball(x,y,r,speed){
+	    this.x = x;//坐标x
+	    this.y = y;//坐标的y
+	    this.r = r;//半径
+	    this.speed = speed;//速度
+	    //将自己推入数组
+	    actorsArr.push(this);//该圆型实例会进入到数组中
+        }
+        //给Ball构造函数添加原型方法，当你要声明一个构造函数，以便用此构造函数生成实例的时候（new Ball）,给这个构造函数添加方法，就用prototype 
+        //下面是渲染的方法
+        Ball.prototype.render = function(){
+        	ctx.beginPath();
+            ctx.arc(this.x,this.y,this.r,0,Math.PI * 2,true);
+            ctx.closePath();
+            ctx.fill();
+
+        }
+        //下面的是更新的方法
+        Ball.prototype.update = function(){
+             this.x+= this.speed;
+        }
+        
+        //演员数组
+        var actorsArr = [];
+        //实例化一些小球，她们都自动可以动画
+        new Ball(100,100,30,2);
+        new Ball
+        var fno = 0;//帧编号
+        
+       //实例画一个小球
+        var b1 = new Ball(100,100,50,2);
+        b.render();
+        var b2 = new Ball(80,200,20,10);
+
+        //惟一的一个定时器
+        setInterval(function(){
+         ctx.clearRect(0,0,600,400);
+         //让小球更新，然后渲染
+         // b1.update();
+         // b1.render();
+         // b2.update();
+         // b2.render();
+         //打印帧编号
+         fno++;
+         ctx.fillText("帧编号:"fno,100,100);
+         //更新渲染所有演员
+         for(var i = 0;i < actorsArr.length;i++){
+            actorsArr[i].update();
+            actorsArr[i].redner();
+         }
+        },20);//
+        //
+    </script>
+</body>
+
+</html>
+
+<!--
+两个API：
+mycanvas.getContext("2d");
+ 1.canvas起初是空白的，为了展示，首先脚本需要找到渲染上下文，然后在它的上面绘制。
+ 2.ctx.fillRct(x,y,w,h);
+ fill是 填充的意思，rect 是矩形的意思，这句话的而作用是填充一个矩形。
+ -->
+
+ <!-- canvas兼容到IE9 -->
+
+
+
